@@ -11,8 +11,8 @@ angular.module('app.controllers', [])
             return _.contains( ['/404', '/pages/500', '/pages/login', '/pages/signin', '/pages/signin1', '/pages/signin2', '/pages/signup', '/pages/signup1', '/pages/signup2', '/pages/lock-screen'], path )
 
         $scope.main =
-            brand: 'Flatify'
-            name: 'Lisa Doe' # those which uses i18n can not be replaced with two way binding var for now.
+            brand: 'Coinbinator'
+            # name: 'Lisa Doe' # those which uses i18n can not be replaced with two way binding var for now.
 
 ])
 
@@ -51,49 +51,9 @@ angular.module('app.controllers', [])
 
 ])
 
-.controller('SigninController', [
-    '$scope'
-    ($scope) ->
-
-    $scope.credentials = {
-        email: ''
-        password: ''
-    }
-
-    $scope.signin = (credentials) ->
-      AuthService.signin(credentials).then (->
-        $rootScope.$broadcast AUTH_EVENTS.loginSuccess
-        return
-      ), ->
-        $rootScope.$broadcast AUTH_EVENTS.loginFailed
-        return
-      return
-])
-
-.controller('SignupController', [
-    '$scope'
-    ($scope) ->
-    $scope.user = {
-        username: ''
-        email: ''
-        password: ''
-    }
-
-    $scope.signup = (user) ->
-      AuthService.signup(user).then (->
-        $rootScope.$broadcast AUTH_EVENTS.loginSuccess
-        return
-      ), ->
-        $rootScope.$broadcast AUTH_EVENTS.loginFailed
-        return
-      return
-])
-
-.controller("ApplicationController", ['$scope', 'USER_ROLES', 'AuthService', ($scope, USER_ROLES, AuthService) ->
+.controller("ApplicationController", ['$scope', 'AuthService', ($scope, USER_ROLES, AuthService) ->
   $scope.currentUser = null
-  $scope.userRoles = USER_ROLES
-  $scope.isAuthorized = AuthService.isAuthorized
-  return
+  $scope.AuthService = AuthService
 ])
 
 

@@ -19,7 +19,7 @@
             <link rel="stylesheet" href="styles/main.css">
 
     </head>
-    <body data-ng-app="app" data-ng-controller="ApplicationController" id="app" data-custom-background data-off-canvas-nav>
+    <body data-ng-app="app" data-ng-controller="ApplicationController" id="app" class="" data-custom-background data-off-canvas-nav>
         <!--[if lt IE 9]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -31,12 +31,13 @@
                      id="header" class="top-header"></section>
 
                 <aside data-ng-include=" 'views/nav.html' "
-                     id="nav-container"></aside>
+                     id="nav-container" ng-hide="true"></aside>
             </div>
 
             <div class="view-container">
                 <section data-ng-view id="content" class="animate-fade-up"></section>
             </div>
+            
         </div>
 
 

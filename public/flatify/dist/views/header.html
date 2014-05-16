@@ -1,4 +1,4 @@
-<header class="clearfix">
+<header class="clearfix" data-ng-controller="HeaderController">
     <a href="#/" data-toggle-min-nav
                  class="toggle-min"
                  ><i class="fa fa-bars"></i></a>
@@ -11,14 +11,14 @@
     </div>
 
     <!-- needs to be put after logo to make it working-->
-    <div class="menu-button" toggle-off-canvas>
+<!--     <div ng-hide="true" class="menu-button" toggle-off-canvas>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-    </div>
+    </div> -->
 
     <div class="top-nav">
-        <ul class="nav-left list-unstyled">
+<!--         <ul class="nav-left list-unstyled">
             <li class="dropdown">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-comment-o"></i>
@@ -155,10 +155,10 @@
                     </div>
                 </div>
             </li>
-        </ul>
+        </ul> -->
 
-        <ul class="nav-right pull-right list-unstyled">
-            <li class="dropdown langs text-normal" data-ng-controller="LangCtrl">
+        <ul class="nav-right pull-right list-unstyled"  ng-show="Auth.isAuthenticated()">
+<!--             <li class="dropdown langs text-normal" data-ng-controller="LangCtrl">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                     {{lang}}
                 </a>
@@ -184,7 +184,7 @@
                     <li data-ng-show="lang !== '한국어' ">
                         <a href="javascript:;" data-ng-click="setLang('한국어')"><div class="flag flags-korea"></div> 한국어</a></li>
                 </ul>
-            </li>
+            </li> -->
 <!--             <li class="dropdown">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="fa fa-magic nav-icon"></span>
@@ -201,7 +201,7 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu with-arrow pull-right">
-                    <li>
+                    <!-- <li>
                         <a href="#/pages/profile">
                             <i class="fa fa-user"></i>
                             <span data-i18n="My Profile"></span>
@@ -218,11 +218,11 @@
                             <i class="fa fa-lock"></i>
                             <span data-i18n="Lock"></span>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
-                        <a href="#/pages/signin">
+                        <a href="#" ng-click="signout()">
                             <i class="fa fa-sign-out"></i>
-                            <span data-i18n="Log Out"></span>
+                            <span data-i18n="Sign Out"></span>
                         </a>
                     </li>
                 </ul>

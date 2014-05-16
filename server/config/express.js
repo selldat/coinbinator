@@ -19,8 +19,8 @@ var express = require('express'),
     helpers = require('view-helpers'),
     config = require('./config'),
     expressValidator = require('express-validator'),
-    appPath = process.cwd();
-    // util = require('./util');
+    appPath = process.cwd(),
+    util = require('./util');
     // assetmanager = require('assetmanager'),
     // fs = require('fs'),
     // Grid = require('gridfs-stream');
@@ -160,16 +160,16 @@ module.exports = function(app, passport, db) {
     //     //     app.use('/' + name, express.static(config.root + '/' + mean.modules[name].source + '/' + name + '/public'));
     //     // }
 
-    //     function bootstrapRoutes() {
-    //         // Skip the app/routes/middlewares directory as it is meant to be
-    //         // used and shared by routes as further middlewares and is not a
-    //         // route by itself
-    //         util.walk(appPath + '/server/routes', 'middlewares', function(path) {
-    //             require(path)(app, passport);
-    //         });
-    //     }
+        function bootstrapRoutes() {
+            // Skip the app/routes/middlewares directory as it is meant to be
+            // used and shared by routes as further middlewares and is not a
+            // route by itself
+            util.walk(appPath + '/server/routes', 'middlewares', function(path) {
+                require(path)(app, passport);
+            });
+        }
 
-    //     bootstrapRoutes();
+        bootstrapRoutes();
 
     //     //mean middlware from modules after routes
     //     app.use(mean.chainware.after);

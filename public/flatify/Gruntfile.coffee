@@ -246,6 +246,12 @@ module.exports = (grunt) ->
                     cwd: ".tmp/images"
                     dest: "<%= yeoman.dist %>/images"
                     src: ["generated/*"]
+                ,
+                    expand: true
+                    cwd: "<%= yeoman.app %>/scripts",
+                    src: "**/*.js"
+                    dest: ".tmp/scripts"
+                    ext: ".js"
                 ]
 
             styles:
@@ -277,5 +283,6 @@ module.exports = (grunt) ->
         return grunt.task.run(["build", "open", "connect:dist:keepalive"])  if target is "dist"
         grunt.task.run ["clean:server", "concurrent:server", "connect:livereload", "open", "watch"]
 
-    grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist", "copy:dist", "concat", "uglify", "usemin"]
+    # grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist","copy:dist", "concat", "usemin"]
+    grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist","copy:dist", "concat", "uglify", "usemin"]
     grunt.registerTask "default", ["jshint", "build"]
