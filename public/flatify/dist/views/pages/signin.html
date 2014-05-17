@@ -22,8 +22,11 @@
 
                 <span class="line-thru">OR</span> -->
 
-                <form class="form-horizontal">
+                <form class="form-horizontal" name="signinForm">
                     <fieldset>
+                        <div class="alert alert-danger" ng-show="error">
+                            {{errorMessage}}
+                        </div>
                         <div class="form-group">
                             <div class="input-group input-group-lg">
                                 <span class="input-group-addon">
@@ -32,7 +35,22 @@
                                 <input type="email"
                                        class="form-control"
                                        placeholder="Email"
+                                       name="email"
+                                       ng-model="credentials.email"
+                                       ng-minlength="3"
+                                       required
                                        >
+                            </div>
+                            <div ng-show="formSignup.email.$dirty && formSignup.email.$invalid">
+                                <small ng-show="formSignup.email.$error.required">
+                                    Your email is required.
+                                </small>
+                                <small ng-show="formSignup.email.$error.minlength">
+                                    Your email is required to be at least 3 characters.
+                                </small>
+                                <small ng-show="formSignup.email.$error.email">
+                                    That is not a valid email. Please input a valid email.
+                                </small>
                             </div>
                         </div>
                         <div class="form-group">
@@ -43,13 +61,24 @@
                                 <input type="password"
                                        class="form-control"
                                        placeholder="password"
+                                       name="password"
+                                       ng-model="credentials.password"
+                                       ng-minlength="8"
+                                       ng-maxlength="20"
+                                       required
                                        >
+                            </div>
+                            <div ng-show="formSignup.password.$dirty && formSignup.password.$invalid">
+                                <small ng-show="formSignup.password.$error.required">
+                                    Your password is required.
+                                </small>
+                                <small ng-show="formSignup.password.$error.minlength || formSignup.password.$error.maxlength">
+                                    Your password is must be between 8-20 characters long.
+                                </small>
                             </div>
                         </div>
                         <div class="form-group">
-                        </div>
-                        <div class="form-group">
-                            <a href="#/" class="btn btn-primary btn-lg btn-block">Log in</a>
+                            <button class="btn btn-primary btn-lg btn-block" ng-disabled="formSignup.$invalid" ng-click="signin(credentials)">Sign in</button>
                         </div>
                     </fieldset>
                 </form>

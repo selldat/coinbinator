@@ -1,9 +1,10 @@
-'use strict';
+  'use strict';
 
 /**
  * Generic require login routing middleware
  */
 exports.requiresLogin = function(req, res, next) {
+    console.log('requiresLogin called');
     if (!req.isAuthenticated()) {
         return res.send(401, 'User is not authorized');
     }

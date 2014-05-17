@@ -2,9 +2,9 @@
   'use strict';
 
   angular.module('app.global.controllers', [])
-    .controller('HeaderController', ['$scope', '$rootScope', 'Session', 'AuthService', 'AUTH_EVENTS', 
+    .controller('HeaderController', ['$scope', '$rootScope', '$location', 'Session', 'AuthService', 'AUTH_EVENTS', 
 
-      function ($scope, $rootScope, Session, Auth, AUTH_EVENTS) {
+      function ($scope, $rootScope, $location, Session, Auth, AUTH_EVENTS) {
         console.log('HeaderController called');
         console.log('Auth: ');
         console.log(Auth);
@@ -15,7 +15,7 @@
         $scope.signout = function () {
           Auth.signout().then(function () {
             // $rootScope.$broadcast(AUTH_EVENTS.signoutSuccess);
-            // Session.destroy();
+            Session.destroy();
             $location.path('/signin');
           });
         };

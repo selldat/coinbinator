@@ -17,10 +17,13 @@ var mongoose = require('mongoose'),
 //  * Show login form
 //  */
 // exports.signin = function(req, res) {
+//     console.log('route: signin');
 //     if(req.isAuthenticated()) {
-//         return res.redirect('/');
+//         return res.status(200).send({});
+//         // return res.redirect('/');
 //     }
-//     res.redirect('#!/login');
+//     return res.
+//     // res.redirect('#!/login');
 // };
 
 /**
@@ -28,6 +31,7 @@ var mongoose = require('mongoose'),
  */
 exports.signout = function(req, res) {
     req.logout();
+    res.status(200).send({success: true});
 };
 
 // /**
@@ -64,7 +68,7 @@ exports.create = function(req, res, next) {
             switch (err.code) {
                 case 11000:
                 case 11001:
-                    res.status(400).send('Username already taken');
+                    res.status(400).send('Username/Email already taken');
                     break;
                 default:
                     res.status(400).send('Please fill all the required fields');

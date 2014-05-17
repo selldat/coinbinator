@@ -24,6 +24,9 @@
 
                 <section>
                     <form class="form-horizontal" name="formSignup">
+                        <div class="alert alert-danger" ng-show="error">
+                            {{errorMessage}}
+                        </div>
                         <div class="form-group">
                             <div class="input-group input-group-lg">
                                 <span class="input-group-addon">
@@ -34,7 +37,17 @@
                                         placeholder="User name"
                                         ng-model="user.username"
                                         name="username"
+                                        required
+                                        ng-pattern="/^[a-zA-Z0-9]*$/"
                                         >
+                            </div>
+                            <div ng-show="formSignup.username.$dirty && formSignup.username.$invalid">
+                                <small ng-show="formSignup.username.$error.required">
+                                    Your username is required.
+                                </small>
+                                <small ng-show="formSignup.username.$error.pattern">
+                                    Spaces in the username is not allowed.
+                                </small>
                             </div>
                         </div>
                         <div class="form-group">
@@ -47,7 +60,20 @@
                                        placeholder="Email"
                                        ng-model="user.email"
                                        name="email"
+                                       ng-minlength="3"
+                                       required
                                        >
+                            </div>
+                            <div ng-show="formSignup.email.$dirty && formSignup.email.$invalid">
+                                <small ng-show="formSignup.email.$error.required">
+                                    Your email is required.
+                                </small>
+                                <small ng-show="formSignup.email.$error.minlength">
+                                    Your email is required to be at least 3 characters.
+                                </small>
+                                <small ng-show="formSignup.email.$error.email">
+                                    That is not a valid email. Please input a valid email.
+                                </small>
                             </div>
                         </div>
                         <div class="form-group">
@@ -60,7 +86,18 @@
                                        placeholder="Password"
                                        ng-model="user.password"
                                        name="password"
+                                       ng-minlength="8"
+                                       ng-maxlength="20"
+                                       required
                                        >
+                            </div>
+                            <div ng-show="formSignup.password.$dirty && formSignup.password.$invalid">
+                                <small ng-show="formSignup.password.$error.required">
+                                    Your password is required.
+                                </small>
+                                <small ng-show="formSignup.password.$error.minlength || formSignup.password.$error.maxlength">
+                                    Your password is must be between 8-20 characters long.
+                                </small>
                             </div>
                         </div>
 

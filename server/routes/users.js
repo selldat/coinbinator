@@ -5,8 +5,8 @@ var users = require('../controllers/users');
 
 module.exports = function(app, passport) {
 
-    // app.route('/logout')
-    //     .get(users.signout);
+    app.route('/signout')
+        .get(users.signout);
         
     // app.route('/users/me')
     //     .get(users.me);
@@ -24,16 +24,15 @@ module.exports = function(app, passport) {
     //         res.send(req.isAuthenticated() ? req.user : '0');
     //     });
 
-    // // Setting the local strategy route
-    // app.route('/login')
-    //     .post(passport.authenticate('local', {
-    //         failureFlash: true
-    //     }), function(req, res) {
-    //         res.send({
-    //             user: req.user,
-    //             redirect: (req.user.roles.indexOf('admin') !== -1) ? req.get('referer') : false
-    //         });
-    //     });
+    // Setting the local strategy route
+    app.route('/signin')
+        .post(passport.authenticate('local', {
+            failureFlash: true
+        }), function(req, res) {
+            console.log('signin result: ');
+            console.log(req.user);
+            res.send(req.user);
+        });
 
     // // Setting the facebook oauth routes
     // app.route('/auth/facebook')

@@ -9,7 +9,9 @@
           signin: function (credentials) {
             return $http.post('/signin', credentials)
               .then(function (response) {
-                Session.create(response.userId);
+                console.log('signin response from Auth: ');
+                console.log(response);
+                Session.create(response.data._id);  
               });
           },
           signup: function (user) {
@@ -21,7 +23,7 @@
                 console.log(response);
                 console.log('response.userId: ');
                 console.log(response.data.userId);
-                Session.create(response.data.userId);
+                Session.create(response.data._id);  
               });
           },
           signout: function () {
@@ -52,6 +54,9 @@
       };
 
       self.destroy = function () {
+        console.log('Session.destroy() called.');
+        console.log('self.userId: ');
+        console.log(self.userId);
         self.userId = null;
       };
 

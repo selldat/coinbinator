@@ -15,7 +15,10 @@ var UserSchema = new Schema({
     //     type: String,
     //     required: true
     // },
-    email: String,
+    email: {
+      type: String,
+      unique: true
+    },
     username: {
         type: String,
         unique: true
@@ -148,7 +151,7 @@ if (!UserSchema.options.toObject) {
 
 UserSchema.options.toObject.transform = function (doc, ret, options) {
   return {
-    'userId': ret._id,
+    '_id': ret._id,
     'email': ret.email,
     'username': ret.username
   };
