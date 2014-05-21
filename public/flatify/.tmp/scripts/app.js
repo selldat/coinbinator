@@ -42,6 +42,10 @@
         }
       ]);
 
+      $httpProvider.defaults.useXDomain = true;
+      delete $httpProvider.defaults.headers.common['X-Requested-With'];
+      $httpProvider.defaults.withCredentials = true;
+
       $routeProvider
         .when('/', {
           redirectTo: '/signin'
@@ -69,28 +73,28 @@
 
   .run(['$rootScope', '$location', 'Session', 'AUTH_EVENTS', 'AuthService', 
     function ($rootScope, $location, Session, AUTH_EVENTS, Auth) {
-      // console.log('Auth.isAuthenticated(): ');
-
-      // if (Auth && Auth.isAuthenticated) {
-      //   console.log(Auth.isAuthenticated());  
-      // }
-
-      // if(Auth.isAuthenticated()) {
-      //   $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
-      // } else {
-      //   $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-      // }
-
       $rootScope.$on('$routeChangeStart', function (event, next) {
-        console.log('$routeChangeStart: ');
-        console.log(!!Session.getUserId());
-        var userAuthenticated = !!Session.getUserId();
-
-        if ((!next.isSignin && !next.isSignup)) {
-          if (!userAuthenticated) {
-            $location.path('/signin');
+        Auth.ajaxIsAuthenticated().then(
+          //success
+          function (response) {
+            console.log('from routeChangeStart');
+            console.log(response.data);
+            if (response.data === '0') {
+              if (!next.isSignin && !next.isSignup) {
+                $location.path('/signin');
+              }
+            } else {
+              $location.path('/dashboard');
+              Session.create();
+              $rootScope.$broadcast(AUTH_EVENTS.signinSuccess, response);
+            }
+          },
+          //error
+          function (response) {
+            console.log('error response from routeChangeStart: ')
+            console.log(response);
           }
-        }
+        );
       });
     }
   ]);

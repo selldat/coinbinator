@@ -2,8 +2,8 @@
   'use strict';
 
   angular.module('app.auth.controllers', [])
-    .controller('SigninController', ['$scope', '$rootScope', '$location', 'AuthService', 'AUTH_EVENTS',
-      function ($scope, $rootScope, $location, Auth, AUTH_EVENTS) {
+    .controller('SigninController', ['$scope', '$rootScope', '$location', '$http', 'AuthService', 'AUTH_EVENTS',
+      function ($scope, $rootScope, $location, $http, Auth, AUTH_EVENTS) {
 
         $scope.credentials = {
           email: '',
@@ -16,19 +16,18 @@
         $scope.signin = function (credentials) {
           Auth.signin(credentials).then(
             function (response) {
-              $rootScope.$broadcast(AUTH_EVENTS.signinSuccess);
+              $rootScope.$broadcast(AUTH_EVENTS.signinSuccess, response);
               $location.path('/dashboard');
               $scope.error = false;
             }, 
             function (response) {
-              $rootScope.$broadcast(AUTH_EVENTS.signinFailed);
+              $rootScope.$broadcast(AUTH_EVENTS.signinFailed, response);
               console.log(response);
               $scope.error = true;
               $scope.errorMessage = response.data;
             }
           );
         };
-
       }
     ])
 
@@ -46,13 +45,13 @@
 
         $scope.signup = function (user) {
           Auth.signup(user).then(
-            function () {
-              $rootScope.$broadcast(AUTH_EVENTS.signupSuccess);
+            function (response) {
+              $rootScope.$broadcast(AUTH_EVENTS.signupSuccess, response);
               $location.path('/dashboard');
               $scope.error = false;
             },
             function (response) {
-              $rootScope.$broadcast(AUTH_EVENTS.signupFailed);
+              $rootScope.$broadcast(AUTH_EVENTS.signupFailed, response);
               console.log(response);
               $scope.error = true;
               $scope.errorMessage = response.data;

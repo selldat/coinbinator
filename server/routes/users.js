@@ -8,8 +8,8 @@ module.exports = function(app, passport) {
     app.route('/signout')
         .get(users.signout);
         
-    // app.route('/users/me')
-    //     .get(users.me);
+    app.route('/users/me')
+        .get(users.me);
 
     // Setting up the users api
     app.route('/register')
@@ -18,11 +18,13 @@ module.exports = function(app, passport) {
     // Setting up the userId param
     app.param('userId', users.user);
 
-    // // AngularJS route to check for authentication
-    // app.route('/loggedin')
-    //     .get(function(req, res) {
-    //         res.send(req.isAuthenticated() ? req.user : '0');
-    //     });
+    // AngularJS route to check for authentication
+    app.route('/loggedin')
+        .get(function(req, res) {
+            console.log(req.isAuthenticated());
+
+            res.send(req.isAuthenticated() ? req.user : '0');
+        });
 
     // Setting the local strategy route
     app.route('/signin')
@@ -38,13 +40,24 @@ module.exports = function(app, passport) {
     // app.route('/auth/facebook')
     //     .get(passport.authenticate('facebook', {
     //         scope: ['email', 'user_about_me'],
-    //         failureRedirect: '#!/login'
+    //         failureRedirect: '#/signin'
     //     }), users.signin);
+
+        // Setting the facebook oauth routes
+    app.route('/auth/facebook')
+        .get(passport.authenticate('facebook', {
+            scope: ['email', 'user_about_me']
+        }), users.signin);
+
 
     // app.route('/auth/facebook/callback')
     //     .get(passport.authenticate('facebook', {
-    //         failureRedirect: '#!/login'
+    //         failureRedirect: '#/signin',
+    //         successRedirect: '#/dashboard'
     //     }), users.authCallback);
+
+    app.route('/auth/facebook/callback')
+        .get(passport.authenticate('facebook'), users.authCallback);
 
     // // Setting the github oauth routes
     // app.route('/auth/github')

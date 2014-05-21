@@ -6,25 +6,25 @@
 var mongoose = require('mongoose'),
     User = mongoose.model('User');
 
-// /**
-//  * Auth callback
-//  */
-// exports.authCallback = function(req, res) {
-//     res.redirect('/');
-// };
+/**
+ * Auth callback
+ */
+exports.authCallback = function(req, res) {
+    return res.redirect('/#/dashboard');
+};
 
-// /**
-//  * Show login form
-//  */
-// exports.signin = function(req, res) {
-//     console.log('route: signin');
-//     if(req.isAuthenticated()) {
-//         return res.status(200).send({});
-//         // return res.redirect('/');
-//     }
-//     return res.
-//     // res.redirect('#!/login');
-// };
+/**
+ * Show login form
+ */
+exports.signin = function(req, res) {
+    console.log('signin called');
+    if(req.isAuthenticated()) {
+        return res.status(200).send(req.user);
+        // return res.redirect('/#/dashboard');
+    }
+    return res.status(400).send({error: true});
+    // res.redirect('#!/login');
+};
 
 /**
  * Logout
@@ -85,12 +85,12 @@ exports.create = function(req, res, next) {
     });
 };
 
-// /**
-//  * Send User
-//  */
-// exports.me = function(req, res) {
-//     res.jsonp(req.user || null);
-// };
+/**
+ * Send User
+ */
+exports.me = function(req, res) {
+    res.jsonp(req.user || null);
+};
 
 /**
  * Find user by id

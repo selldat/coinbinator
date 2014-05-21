@@ -5,7 +5,8 @@ module.exports = {
     port: 3001,
     app: {
         name: 'MEAN - A Modern Stack - Test'
-    }
+    },
+    client_url: 'http://localhost:3000'
     // ,
     // facebook: {
     //     clientID: 'APP_ID',

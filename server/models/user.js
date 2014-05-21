@@ -28,9 +28,9 @@ var UserSchema = new Schema({
     //     default: ['authenticated']
     // },
     hashed_password: String,
-    // provider: String,
+    provider: String,
     salt: String,
-    // facebook: {},
+    facebook: {}
     // twitter: {},
     // github: {},
     // google: {},
@@ -64,19 +64,19 @@ var validatePresenceOf = function(value) {
 
 UserSchema.path('email').validate(function(email) {
     // If you are authenticating by any of the oauth strategies, don't validate.
-    // if (!this.provider) return true;
+    if (!this.provider) return true;
     return (typeof email === 'string' && email.length > 0);
 }, 'Email cannot be blank');
 
 UserSchema.path('username').validate(function(username) {
     // If you are authenticating by any of the oauth strategies, don't validate.
-    // if (!this.provider) return true;
+    if (!this.provider) return true;
     return (typeof username === 'string' && username.length > 0);
 }, 'Username cannot be blank');
 
 UserSchema.path('hashed_password').validate(function(hashed_password) {
     // If you are authenticating by any of the oauth strategies, don't validate.
-    // if (!this.provider) return true;
+    if (!this.provider) return true;
     return (typeof hashed_password === 'string' && hashed_password.length > 0);
 }, 'Password cannot be blank');
 
@@ -87,7 +87,7 @@ UserSchema.path('hashed_password').validate(function(hashed_password) {
 UserSchema.pre('save', function(next) {
     if (!this.isNew) return next();
 
-    if (!validatePresenceOf(this.password) && !this.provider)
+    if (!this.provider && !validatePresenceOf(this.password))
         next(new Error('Invalid password'));
     else
         next();

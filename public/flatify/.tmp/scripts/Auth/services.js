@@ -2,42 +2,39 @@
   'use strict';
 
   angular.module('app.auth.services', [])
-    .factory('AuthService', ['$http', 'Session',
-      function ($http, Session) {
+    .factory('AuthService', ['$http', '$rootScope', 'Session', 'AUTH_EVENTS',
+      function ($http, $rootScope, Session, AUTH_EVENTS) {
       
         return {
+          me: function () {
+            return $http.get('/users/me');
+          },
           signin: function (credentials) {
             return $http.post('/signin', credentials)
               .then(function (response) {
-                console.log('signin response from Auth: ');
-                console.log(response);
-                Session.create(response.data._id);  
+                Session.create();
+                $rootScope.$broadcast(AUTH_EVENTS.signinSuccess, response);  
               });
           },
           signup: function (user) {
-            console.log('user: ');
-            console.log(user);
             return $http.post('/register', user)
               .then(function (response) {
-                console.log('response: ');
-                console.log(response);
-                console.log('response.userId: ');
-                console.log(response.data.userId);
-                Session.create(response.data._id);  
+                Session.create();
+                $rootScope.$broadcast(AUTH_EVENTS.signupSuccess, response);
               });
           },
           signout: function () {
             return $http.get('/signout')
               .then(function (response) {
                 Session.destroy();
+                $rootScope.$broadcast(AUTH_EVENTS.signoutSuccess, response);
               });
           },
           isAuthenticated: function () {
-            // console.log('Session: ');
-            // console.log(Session);
-            // console.log('from isAuthenticated: ');
-            // console.log(Session.userId);
-            return !!Session.userId;
+            return Session.isLoggedIn();
+          },
+          ajaxIsAuthenticated: function () {
+            return $http.get('/loggedin');
           }
         };
 
@@ -46,24 +43,18 @@
 
     .service('Session', function () {
       var self = this;
+      self.loggedin = false;
 
-      self.create = function (userId) {
-        self.userId = userId;
-        console.log('self.userId: ');
-        console.log(self.userId);
+      self.create = function () {
+        self.loggedIn = true;
       };
 
       self.destroy = function () {
-        console.log('Session.destroy() called.');
-        console.log('self.userId: ');
-        console.log(self.userId);
-        self.userId = null;
+        self.loggedIn = false;
       };
 
-      self.getUserId = function () {
-        console.log('self.userId: ');
-        console.log(self.userId);
-        return self.userId;
+      self.isLoggedIn = function () {
+        return self.loggedIn;
       }
 
       return self;

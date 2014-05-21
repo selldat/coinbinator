@@ -4,7 +4,8 @@ module.exports = {
     db: 'mongodb://localhost/mean-prod',
     app: {
         name: 'MEAN - A Modern Stack - Production'
-    }
+    },
+    client_url: 'http://localhost:3000'
     // ,
     // facebook: {
     //     clientID: 'APP_ID',
