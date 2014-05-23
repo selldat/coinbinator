@@ -52,7 +52,6 @@ module.exports = function(passport) {
                     });
                 }
                 if (!user.authenticate(password)) {
-
                     return done(null, false, {
                         message: 'Invalid password'
                     });

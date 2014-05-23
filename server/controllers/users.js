@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    Account = mongoose.model('Account');
 
 /**
  * Auth callback
@@ -17,7 +18,6 @@ exports.authCallback = function(req, res) {
  * Show login form
  */
 exports.signin = function(req, res) {
-    console.log('signin called');
     if(req.isAuthenticated()) {
         return res.status(200).send(req.user);
         // return res.redirect('/#/dashboard');
@@ -46,7 +46,8 @@ exports.signout = function(req, res) {
  */
 exports.create = function(req, res, next) {
     console.log(req.body);
-    var user = new User(req.body);
+    var user = new User(req.body),
+        account = new Account();
 
     user.provider = 'local';
 
@@ -78,7 +79,14 @@ exports.create = function(req, res, next) {
         }
         req.logIn(user, function(err) {
             if (err) return next(err);
-            return res.status(200).send(user.toObject());
+            account.userEmail = user.email;
+            account.currentBalance = 0;
+            account.save(function (err) {
+              if (err) {
+                res.status(400).send(err.toString());
+              }
+              return res.status(200).send({user: user.toObject(), account: account});  
+            });
             // return res.redirect('/');
         });
         // res.status(200);
@@ -89,7 +97,15 @@ exports.create = function(req, res, next) {
  * Send User
  */
 exports.me = function(req, res) {
-    res.jsonp(req.user || null);
+    var credentials = null;
+    if (req.user) {
+        credentials = {
+            user: req.user,
+            token: req.token
+        };
+    } 
+
+    res.jsonp(credentials);
 };
 
 /**

@@ -9,6 +9,7 @@ module.exports = {
 	hostname: process.env.HOST || process.env.HOSTNAME,
 	db: process.env.MONGOHQ_URL,
 	templateEngine: 'swig',
+    tokenLife: 0,
 
     // The secret should be set to a non-guessable string that
     // is used to compute a session hash

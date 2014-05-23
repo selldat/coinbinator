@@ -1,38 +1,45 @@
 'use strict';
 
 // User routes use users controller
-var users = require('../controllers/users');
+var users = require('../controllers/users'),
+    accessTokens = require('../controllers/accessTokens'),
+    auth = require('./middlewares/authorization');
 
 module.exports = function(app, passport) {
 
-    app.route('/signout')
+    app.route('/api/signout')
         .get(users.signout);
-        
-    app.route('/users/me')
-        .get(users.me);
+    
+    app.route('/api/users/me')
+        .post(accessTokens.exists, users.me);
 
     // Setting up the users api
-    app.route('/register')
+    app.route('/api/register')
         .post(users.create);
+
+    app.route('/auth/token')
+        .post(accessTokens.create, function(req, res) {
+            if (req.token) {
+                return res.status(200).send(req.token);
+            }
+            return res.status(400).send('no token generated');
+        });
 
     // Setting up the userId param
     app.param('userId', users.user);
 
     // AngularJS route to check for authentication
-    app.route('/loggedin')
-        .get(function(req, res) {
-            console.log(req.isAuthenticated());
-
-            res.send(req.isAuthenticated() ? req.user : '0');
+    app.route('/api/loggedin')
+        .get(accessTokens.exists, function(req, res) {
+            res.send(req.token ? req.user : '0');
         });
 
     // Setting the local strategy route
-    app.route('/signin')
+    app.route('/api/signin')
         .post(passport.authenticate('local', {
-            failureFlash: true
+            failureFlash: true,
+            session: false
         }), function(req, res) {
-            console.log('signin result: ');
-            console.log(req.user);
             res.send(req.user);
         });
 
