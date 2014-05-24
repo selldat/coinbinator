@@ -10,8 +10,10 @@ module.exports = function(app, passport) {
     app.route('/api/signout')
         .get(users.signout);
     
+    // app.route('/api/users/me')
+    //     .post(accessTokens.exists, users.me);
     app.route('/api/users/me')
-        .post(accessTokens.exists, users.me);
+        .post(users.me);
 
     // Setting up the users api
     app.route('/api/register')
@@ -29,16 +31,27 @@ module.exports = function(app, passport) {
     app.param('userId', users.user);
 
     // AngularJS route to check for authentication
+    // app.route('/api/loggedin')
+    //     .get(accessTokens.exists, function(req, res) {
+    //         res.send(req.token ? req.user : '0');
+    //     });
     app.route('/api/loggedin')
-        .get(accessTokens.exists, function(req, res) {
-            res.send(req.token ? req.user : '0');
+        .get(function(req, res) {
+            // res.send(req.token ? req.user : '0');
+            res.send(req.isAuthenticated() ? req.user : '0');
         });
 
     // Setting the local strategy route
+    // app.route('/api/signin')
+    //     .post(passport.authenticate('local', {
+    //         failureFlash: true,
+    //         session: false
+    //     }), function(req, res) {
+    //         res.send(req.user);
+    //     });
     app.route('/api/signin')
         .post(passport.authenticate('local', {
-            failureFlash: true,
-            session: false
+            failureFlash: true
         }), function(req, res) {
             res.send(req.user);
         });

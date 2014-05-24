@@ -6,6 +6,9 @@ var accounts = require('../controllers/accounts'),
 
 module.exports = function (app, passport) {
 
+  app.route('/api/accounts/me')
+    .post(accounts.me);
+
   app.route('/api/accounts/load')
     .post(accounts.loadMoney);
 

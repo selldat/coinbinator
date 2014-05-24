@@ -195,19 +195,19 @@
             </li> -->
             <li class="dropdown text-normal nav-profile">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-                    <img src="images/profile.jpg" alt="" class="img-circle img30_30">
+                    <img src="{{currentUser.photo}}" alt="" class="img-circle img30_30">
                     <span class="hidden-xs">
                         <span data-i18n="{{currentUser.username}}"></span>
                     </span>
                 </a>
                 <ul class="dropdown-menu with-arrow pull-right">
-                    <!-- <li>
-                        <a href="#/pages/profile">
+                    <li>
+                        <a href="#/account/me">
                             <i class="fa fa-user"></i>
-                            <span data-i18n="My Profile"></span>
+                            <span data-i18n="My Account"></span>
                         </a>
                     </li>
-                    <li>
+                   <!--  <li>
                         <a href="#/tasks">
                             <i class="fa fa-check"></i>
                             <span data-i18n="My Tasks"></span>

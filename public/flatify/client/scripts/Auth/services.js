@@ -6,25 +6,28 @@
       function ($http, $rootScope, Session, AUTH_EVENTS) {
       
         return {
-          me: function () {
-            return $http.get('/users/me');
+          getAccount: function () {
+            return $http.post('/api/accounts/me')
+          },
+          getProfile: function () {
+            return $http.post('/api/users/me');
           },
           signin: function (credentials) {
-            return $http.post('/signin', credentials)
+            return $http.post('/api/signin', credentials)
               .then(function (response) {
                 Session.create();
                 $rootScope.$broadcast(AUTH_EVENTS.signinSuccess, response);  
               });
           },
           signup: function (user) {
-            return $http.post('/register', user)
+            return $http.post('/api/register', user)
               .then(function (response) {
                 Session.create();
                 $rootScope.$broadcast(AUTH_EVENTS.signupSuccess, response);
               });
           },
           signout: function () {
-            return $http.get('/signout')
+            return $http.get('/api/signout')
               .then(function (response) {
                 Session.destroy();
                 $rootScope.$broadcast(AUTH_EVENTS.signoutSuccess, response);
@@ -34,7 +37,7 @@
             return Session.isLoggedIn();
           },
           ajaxIsAuthenticated: function () {
-            return $http.get('/loggedin');
+            return $http.get('/api/loggedin');
           }
         };
 

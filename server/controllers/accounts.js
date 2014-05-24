@@ -3,6 +3,22 @@
 var mongoose = require('mongoose'),
   Account = mongoose.model('Account');
 
+exports.me = function (req, res) {
+  console.log('me called');
+  console.log('req.user: ');
+  console.log(req.user);
+  console.log('req.user.email: ');
+  console.log(req.user.email);
+
+  Account.findOne({userEmail: req.user.email}, function (err, account) {
+    console.log('err: ');
+    console.log(err);
+    console.log('account result: ');
+    console.log(account);
+    res.json({account: account});
+  });
+};
+
 exports.listAll = function (req, res) {
   Account.find({}, function (err, accounts) {
     res.json({accounts: accounts});

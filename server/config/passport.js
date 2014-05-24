@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
     // GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
     // LinkedinStrategy = require('passport-linkedin').Strategy,
     User = mongoose.model('User'),
+    Account = mongoose.model('Account'),
     config = require('./config');
 
 module.exports = function(passport) {
@@ -65,7 +66,8 @@ module.exports = function(passport) {
     passport.use(new FacebookStrategy({
             clientID: config.facebook.clientID,
             clientSecret: config.facebook.clientSecret,
-            callbackURL: config.facebook.callbackURL
+            callbackURL: config.facebook.callbackURL,
+            profileFields: ['id', 'displayName', 'photos', 'emails']
         },
         function(accessToken, refreshToken, profile, done) {
             User.findOne({
@@ -82,9 +84,20 @@ module.exports = function(passport) {
                         provider: 'facebook',
                         facebook: profile._json
                     });
+
+                    var account = new Account();
                     user.save(function(err) {
                         if (err) console.log(err);
-                        return done(err, user);
+                        account.userEmail = user.email;
+                        account.currentBalance = 0;
+                        account.save(function (err) {
+                          if (err) {
+                            console.log(err); 
+                          }
+                          // return res.status(200).send({user: user.toObject(), account: account});
+                          return done(err, user);  
+                        });                        
+                        
                     });
                 } else {
                     return done(err, user);

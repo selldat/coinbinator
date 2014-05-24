@@ -49,12 +49,7 @@ angular.module('app.controllers', [])
             ['2013',  1030,      540]
         ]
 
-])
-
-.controller("ApplicationController", ['$scope', 'AuthService', ($scope, USER_ROLES, AuthService) ->
-  $scope.currentUser = null
-  $scope.AuthService = AuthService
-])
+]);
 
 
 

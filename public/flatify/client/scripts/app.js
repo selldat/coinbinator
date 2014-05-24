@@ -14,6 +14,7 @@
 
       // Custom modules
       'app.global.controllers',
+      'app.account.controllers',
       'app.ui.ctrls',
       'app.ui.directives',
       'app.ui.services',
@@ -64,6 +65,18 @@
           templateUrl: 'views/dashboard.html',
           controller: 'DashboardController'
         })
+        .when('/account/me', {
+          templateUrl: 'views/account/my-account.html',
+          controller: 'AccountController'
+        })
+        .when('/account/load', {
+          templateUrl: 'views/account/load-money.html',
+          controller: 'AccountController'
+        })
+        .when('/account/send', {
+          templateUrl: 'views/account/send-money.html',
+          controller: 'AccountController'
+        })
         .otherwise({
           redirectTo: '/'
         });
@@ -77,14 +90,18 @@
         Auth.ajaxIsAuthenticated().then(
           //success
           function (response) {
-            console.log('from routeChangeStart');
-            console.log(response.data);
             if (response.data === '0') {
               if (!next.isSignin && !next.isSignup) {
                 $location.path('/signin');
               }
-            } else {
-              $location.path('/dashboard');
+            } 
+            else {
+              console.log($location.path());
+              console.log($location.path().indexOf('/signin') >= 0);
+              if ($location.path().indexOf('/signin') >= 0 || $location.path().indexOf('/signup') >= 0) {
+                $location.path('/dashboard');
+              }
+              console.log($location.path());
               Session.create();
               $rootScope.$broadcast(AUTH_EVENTS.signinSuccess, response);
             }
